@@ -1,0 +1,2 @@
+$noNavbar is used to check where to include navbar.php file :
+-- If the page has a $noNavbar variable, that means will not include navbar page, otherways will included.   
