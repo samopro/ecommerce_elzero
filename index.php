@@ -4,9 +4,9 @@
 
     $pageTitle = 'Homepage';
 
- 	include 'init.php';
-?>
+	 include 'init.php';
 
+?>
 
 
 
