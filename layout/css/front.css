@@ -15,7 +15,15 @@ body {
 	position: absolute;
 	right: 10px;
 	top: 7px;
-	color: #f00;
+	color: #d20707;
+}
+
+.main-form .asterisk {
+	font-size: 26px;
+	position: absolute;
+	right: 25px;
+	top: 8px;
+	color: #d20707;
 }
 
 h1 {

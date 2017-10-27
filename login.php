@@ -19,14 +19,14 @@
 			$hashedPass = sha1($password);
 
 		 // Check if the user exit in database
-			$stmt = $db->prepare('SELECT Username, Password FROM users WHERE Username = ? AND Password = ?');
+			$stmt = $db->prepare('SELECT UserID, Username, Password FROM users WHERE Username = ? AND Password = ?');
 			$stmt->execute(array($user, $hashedPass));
-	 	 // $row = $stmt->fetch();
+	 	    $get = $stmt->fetch();
 
 	 	 // If count > 0, this mean the database contain record about this username
 			if ($stmt->rowCount() > 0) {
-	 	 	$_SESSION['user'] = $user; // Register session name
-	 	 	// $_SESSION['ID'] = $row['userID'];  // Register session ID
+			  $_SESSION['user'] = $user; // Register session name
+			  $_SESSION['uid'] = $get['UserID']; // Register session user id +
 	 	 	 header('Location: index.php'); // Redirect to Dashboard page
 	 	 	 exit();	
 	 	 	} 

@@ -39,16 +39,9 @@ $(function () {
 	});
 
 	// Live preview
-	$('.live-name').keyup(function () {
-		$('.live-preview .caption h3').text($(this).val());
-	});
-
-	$('.live-desc').keyup(function () {
-		$('.live-preview .caption p').text($(this).val());
-	});
-
-	$('.live-price').keyup(function () {
-		$('.live-preview .price-tag').text('$' + $(this).val());
+	$('.live').keyup(function () {
+		var value = ($(this).data('class') == '.live-price') ? '$' + $(this).val() : $(this).val();
+		$($(this).data('class')).text(value);
 	});
 
 });
