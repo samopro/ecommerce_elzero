@@ -59,14 +59,75 @@
         </div>
     </div>
     <hr class="custom-hr">
+    <?php if (isset($_SESSION['user'])) { ?>
+    <!--  Start Add Comment Section  -->
     <div class="row">
-        <div class="col-md-3">
-            User Image
-        </div>
-        <div class="col-md-9">
-            User Comment
+        <div class="col-md-offset-3">
+            <div class="add-comment">
+                <h3>Add You Comment</h3>
+                <form action="<?php $_SERVER['PHP_SELF'] . '?itemid=' . $item['Item_ID'] ?>" method="POST">
+                    <textarea name="comment"></textarea>
+                    <input class="btn btn-primary" type="submit" value="Add Comment">
+                </form>
+                <?php
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                        
+                        $comment =  filter_var($_POST['comment'], FILTER_SANITIZE_STRING);
+                        $userid  = $_SESSION['uid'];
+                        $itemid  = $item['Item_ID'];
+                        
+                        if (!empty($comment)) {
+                            $stmt = $db->prepare('INSERT INTO comments (comment, comment_date, item_id, user_id)
+                                                 VALUES (:comment, CURDATE(), :itemid, :userid)');
+                            $stmt->execute(array(
+                                                 'comment' => $comment,
+                                                 'itemid' => $itemid,
+                                                 'userid' => $userid
+                                                ));
+                            if ($stmt) {
+                                echo '<div class="alert alert-success">Comment Added</div>';
+                            }
+                            
+                        } else {
+                            echo '<div class="alert alert-danger"></div>';
+                        }
+                    }
+                ?>
+            </div>
         </div>
     </div>
+    <?php } else {
+             echo '<a href="login.php">Login</a> or <a href="login.php">register</a> to add comment';  
+          }
+    ?>
+    <!--  End Add Comment Section  -->
+    <hr class="custom-hr">
+    <?php
+        $stmt2 = $db->prepare('SELECT comments.*, users.Username
+                               FROM comments
+                               INNER JOIN users ON users.UserID = comments.user_id
+                               WHERE comments.item_id = ? AND status = 1
+                               ORDER BY c_id DESC');
+                
+        $stmt2->execute(array($itemid));
+        $comments = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+        
+        foreach ($comments as $comment) {
+            echo '<div class="comment-box">';
+                echo '<div class="row">';
+                    echo '<div class="col-md-2 text-center">';
+                        echo '<img class="img-responive img-thumbnail img-circle center-block" src="image.jpeg" alt="user-image">';
+                        echo $comment['Username'];
+                    echo '</div>';
+                    echo '<div class="col-md-10">';
+                        echo '<p class="lead">' . $comment['comment'] . '</p>';
+                    echo '</div>';
+                echo '</div>';
+            echo '</div>';
+            echo '<hr class="custom-hr">';
+        }
+        
+    ?>
 </div> 
 
 <?php

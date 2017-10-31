@@ -227,6 +227,45 @@ table > caption + thead > tr:first-child > td,
 	width: 120px;
 }
 
+.add-comment h3 {
+	margin: 0 0 10px;
+}
+
+.add-comment textarea {
+	display: block;
+	margin-bottom: 10px;
+	width: 500px;
+	height: 140px;
+}
+
+.comment-box {
+	margin-bottom: 20px;
+}
+
+.comment-box img {
+	width: 100px;
+	margin-bottom: 10px;
+}
+
+.comment-box .lead {
+	background-color: #e0e0e0;
+	position: relative;
+	padding: 10px;
+	margin-top: 15px;
+}
+
+.comment-box .lead:before {
+	position: absolute;
+	content: "";
+	width: 0;
+	height: 0;
+	border-width: 15px;
+	border-style: solid;
+	border-color: transparent #e0e0e0 transparent transparent;
+	left: -29px;
+	top: 5px;
+}
+
 /* End Show Item Page */
 
 /*  Start Custom */
