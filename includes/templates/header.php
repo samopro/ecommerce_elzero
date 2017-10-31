@@ -46,7 +46,7 @@
  					<?php
  					 	foreach (getCat() as $cat) {
  					 		echo '<li>';
- 					 			echo '<a href="categories.php?catid=' . $cat['ID'] . '&catname=' . str_replace(' ', '-', $cat['Name']) . '">' . $cat['Name'] . '</a>';
+ 					 			echo '<a href="categories.php?catid=' . $cat['ID'] . '">' . $cat['Name'] . '</a>';
  					 		echo '</li>';
  					 	}
  					?>

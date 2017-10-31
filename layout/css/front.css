@@ -195,4 +195,44 @@ table > caption + thead > tr:first-child > td,
 	width: 120px; 
 }
 
+.thumbnail .date {
+	font-size: 13px;
+	color: #aaa;
+	font-weight: bold;
+	text-align: right;
+}
+
 /* End Profile Page */
+
+/*  Start Show Item Page */
+.item-info h2 {
+	padding: 10px;
+	margin: 0;
+}
+
+.item-info p {
+	padding: 10px;
+}
+
+.item-info ul li {
+	padding: 10px;
+}
+
+.item-info ul li:nth-child(odd) {
+	background-color: #e8e8e8;
+}
+
+.item-info ul li span {
+	display: inline-block;
+	width: 120px;
+}
+
+/* End Show Item Page */
+
+/*  Start Custom */
+
+.custom-hr {
+	border-top: 1px solid #c9c9c9;
+}
+
+/* End Custom */
