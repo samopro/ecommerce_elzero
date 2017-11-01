@@ -1,4 +1,7 @@
-<?php include 'init.php'; ?>
+<?php 
+    session_start();
+    include 'init.php'; 
+?>
 
 <div class="container">
 	<h1 class="text-center">Show Catgory</h1>
@@ -12,6 +15,7 @@
 						echo '<div class="caption">';
 							echo '<h3><a href="items.php?itemid=' . $item['Item_ID'] . '">' . $item['Name'] . '</a></h3>';
 							echo '<p>' . $item['Description'] . '</p>';
+                            echo '<div class="date">' .$item['Add_Date'] . '</div>';
 						echo '</div>';
 					echo '</div>';
 				echo '</div>';

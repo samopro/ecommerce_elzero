@@ -39,15 +39,16 @@
 						<span>Regiter Date:</span> <?php echo $info['Date'] ?> 	
 					</li> 
 				</ul>
+				<a href="#" class="btn btn-default">Edit Information</a>
 			</div>
 		</div>
 	</div>
 </div>
 
-<div class="ads block">
+<div id="my-ads" class="ads block">
 	<div class="container">
 		<div class="panel panel-primary">
-			<div class="panel-heading">My Ads</div>
+			<div class="panel-heading">My Items</div>
 			<div class="panel-body">
 				<?php
 				if (!empty(getItems('Member_ID', $info['UserID']))) {

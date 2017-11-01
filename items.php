@@ -68,13 +68,13 @@
             <div class="add-comment">
                 <h3>Add You Comment</h3>
                 <form action="<?php $_SERVER['PHP_SELF'] . '?itemid=' . $item['Item_ID'] ?>" method="POST">
-                    <textarea name="comment"></textarea>
+                    <textarea name="comment" required></textarea>
                     <input class="btn btn-primary" type="submit" value="Add Comment">
                 </form>
                 <?php
                     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         
-                        $comment =  filter_var($_POST['comment'], FILTER_SANITIZE_STRING);
+                        $comment =  ltrim(rtrim(filter_var($_POST['comment'], FILTER_SANITIZE_STRING)));
                         $userid  = $_SESSION['uid'];
                         $itemid  = $item['Item_ID'];
                         
@@ -91,7 +91,7 @@
                             }
                             
                         } else {
-                            echo '<div class="alert alert-danger"></div>';
+                            echo '<div class="alert alert-danger">You must add comment</div>';
                         }
                     }
                 ?>

@@ -14,14 +14,21 @@
  	<div class="upper-bar">
  		<div class="container">
  			<?php
- 				if (isset($_SESSION['user'])) {
- 					echo 'Welcome ' . $sessionUser . ' ';
-					echo '<a href="profile.php">My Profile</a>';
-					echo ' - <a href="newad.php">New Item</a>'; 
- 					if (checkUserStatus($sessionUser) == 0) {
- 						// Not Activated
- 					}
- 					echo '<span class="pull-right"><a href="logout.php">Logout</a></span>';
+ 				if (isset($_SESSION['user'])) { ?>
+ 				<img class="my-avatar img-circle img-thumbnail" src="image.jpeg" alt="profile-image">
+ 				<div class="btn-group my-info">
+ 				    <span class="btn dropdown-toggle" data-toggle="dropdown">
+ 				        <?php echo $sessionUser ?>
+ 				        <span class="caret"></span>
+ 				     </span>
+                    <ul class="dropdown-menu">
+                        <li><a href="profile.php">My Profile</a></li>
+                        <li><a href="newad.php">New Item</a></li>
+                        <li><a href="profile.php#my-ads">My Items</a></li>
+                        <li><a href="logout.php">Logout</a></li>
+                    </ul>
+ 			    </div>	
+ 				<?php				
  				} else {		
  			?>
 	 			<a href="login.php">

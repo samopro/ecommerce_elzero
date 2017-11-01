@@ -61,8 +61,8 @@
 				));
 
 				// Echo Success Message
-				$theMsg = '<div class="alert alert-success">' . $stmt->rowCount() . ' Record Added</div>';
-				redirectHome($theMsg, 'profile');	
+				$theMsg = '<div class="alert alert-success">' . $stmt->rowCount() . ' Item has been Added</div>';
+				redirectHome($theMsg, 'back');	
 				
 			}
 			
@@ -84,7 +84,8 @@
 	            			<label class="col-sm-2 control-label">Name</label>
 	            			<div class="col-sm-10 col-md-6">
 	            				<input type="text" name="name" class="form-control live" required="required" 
-	            				placeholder="Name of the item" data-class=".live-title">
+	            				placeholder="Name of the item" data-class=".live-title"
+	            				pattern=".{4,}" title="This field require at least 4 characters">
 	            			</div>
 	            		</div>
 	            		<!-- End Name Field -->
@@ -93,7 +94,8 @@
 	            			<label class="col-sm-2 control-label">Description</label>
 	            			<div class="col-sm-10 col-md-6">
 	            				<input type="text" name="description" class="form-control live" required="required" 
-	            				placeholder="Description of the item" data-class=".live-desc">
+	            				placeholder="Description of the item" data-class=".live-desc"
+	            				pattern=".{10,}" title="This field require at least 10 characters">
 	            			</div>
 	            		</div>
 	            		<!-- End Description Field -->
@@ -136,10 +138,7 @@
 	            				<select name="category" class="form-control">
 	            					<option value="0">Select category</option>
 	            					<?php
-	            						$stmt2 = $db->prepare('SELECT * FROM categories');
-	            						$stmt2->execute();
-	            						$categories = $stmt2->fetchAll(PDO::FETCH_ASSOC);
-	            						foreach ($categories as $category) {
+	            						foreach (getAll('categories') as $category) {
 	            							echo '<option value="' . $category['ID'] . '">' . $category['Name'] . '</option>';
 	            						}
 	            					?>

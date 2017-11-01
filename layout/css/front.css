@@ -91,6 +91,11 @@ table > caption + thead > tr:first-child > td,
 	background-color: #fff; 
 }
 
+.upper-bar .my-avatar {
+    width: 35px;
+    height: 35px;
+}
+
 /* End Header */
 
 /* Start Login Page */

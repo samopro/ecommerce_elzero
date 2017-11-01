@@ -1,4 +1,19 @@
 <?php
+
+    /*
+	** Get All Functions v1.0
+	** Function to get all records from any database table
+	*/
+
+    function getAll($table, $orderBy=NUll, $where=NULL) {
+        global $db;
+        
+        $sql = ($where == NULL) ? '' : $where;
+        $stmt = $db->prepare("SELECT * FROM $table $sql $orderBy");
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 	
 	/*
 	** Get Records Functions v1.0
