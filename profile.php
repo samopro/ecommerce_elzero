@@ -52,10 +52,13 @@
 				<?php
 				if (!empty(getItems('Member_ID', $info['UserID']))) {
 					echo '<div class="row">';
-					foreach (getItems('Member_ID ', $info['UserID']) as $item) {
-						echo '<div class="col-sm6 col-md-3 ">';
+					foreach (getItems('Member_ID ', $info['UserID'], 1) as $item) {
+                        echo '<div class="col-sm6 col-md-3 ">';
 						echo '<div class="thumbnail item-box">';
-						echo '<span class="price-tag">' . $item['Price'] . '</span>'; 
+						if ($item['Approve'] == 0) { 
+                            echo '<span class="approve-status">Waiting Approval</span>'; 
+                        }
+                        echo '<span class="price-tag">' . $item['Price'] . '</span>'; 
 						echo '<img class="img-responive" src="image.jpeg" alt="iamge">';
 						echo '<div class="caption">';
 						echo '<h3><a href="items.php?itemid=' . $item['Item_ID'] .'">' . $item['Name'] . '</a></h3>';

@@ -18,7 +18,9 @@
                           INNER JOIN categories ON items.Cat_ID = categories.ID
                           INNER JOIN users ON items.Member_ID = users.UserID
                           WHERE
-                            Item_ID = ?');
+                            Item_ID = ?
+                          AND
+                            Approve = 1');
     $stmt->execute(array($itemid));
        
     if ($stmt->rowCount() > 0) {
@@ -133,7 +135,7 @@
 <?php
  	
     } else {
-        echo '<div class="alert alert-danger">There\'s no shuch id</div>'; 
+        echo '<div class="alert alert-danger">There\'s no shuch id of this item waiting approval</div>'; 
     }
 
 	include $tpl . 'footer.php';

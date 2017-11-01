@@ -17,15 +17,17 @@
 
 
 	/*
-	** Get Items Function v1.0
+	** Get Items Function v2.0
 	** Fucntion to get Items from database
 	*/
 
-	function getItems($where, $value) {
+	function getItems($where, $value, $approve=NULL) {
 
 		global $db;
+        
+        $sql = ($approve == NULL) ? 'AND Approve = 1' : NULL;
 
-		$getItems = $db->prepare("SELECT * FROM items WHERE $where = ? ORDER BY Item_ID DESC");
+		$getItems = $db->prepare("SELECT * FROM items WHERE $where = ? $sql ORDER BY Item_ID DESC");
 
 	    $getItems->execute(array($value));
 

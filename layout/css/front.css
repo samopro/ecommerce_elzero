@@ -169,6 +169,20 @@ table > caption + thead > tr:first-child > td,
 	 color: #fff;
 }
 
+.item-box .approve-status {
+    padding: 3px 5px;
+    position: absolute;
+    left: 0;
+    top: 40px;
+    background-color: #b85a5a;
+    color: #fff;
+}
+
+.item-box .caption p {
+    height: 44px;
+    max-height: 44px;
+}
+
 /* End Categories Page */
 
 /* Start Profile Page */
