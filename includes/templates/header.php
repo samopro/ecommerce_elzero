@@ -51,7 +51,7 @@
  			<div id="navbar" class="collapse navbar-collapse">
  				<ul class="nav navbar-nav navbar-right">
  					<?php
- 					 	foreach (getCat() as $cat) {
+ 					 	foreach (getAll('ID, Name', 'categories', 'WHERE parent=0', '', 'ID', 'ASC') as $cat) {
  					 		echo '<li>';
  					 			echo '<a href="categories.php?catid=' . $cat['ID'] . '">' . $cat['Name'] . '</a>';
  					 		echo '</li>';

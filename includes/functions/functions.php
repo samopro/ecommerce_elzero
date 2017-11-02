@@ -5,51 +5,15 @@
 	** Function to get all records from any database table
 	*/
 
-    function getAll($table, $orderBy=NUll, $where=NULL) {
+    function getAll($field, $table, $where=NULL, $and=NULL, $orderField, $ordering='DESC' ) {
         global $db;
         
-        $sql = ($where == NULL) ? '' : $where;
-        $stmt = $db->prepare("SELECT * FROM $table $sql $orderBy");
+        $stmt = $db->prepare("SELECT $field FROM $table $where $and ORDER BY $orderField $ordering");
         $stmt->execute();
         
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 	
-	/*
-	** Get Records Functions v1.0
-	** Function to get categories from database
-	*/
-
-	function getCat() {
-		
-		global $db;
-		
-		$getCat = $db->prepare('SELECT * FROM categories');
-		$getCat->execute();
-
-		return $getCat->fetchAll(PDO::FETCH_ASSOC);
-	}
-
-
-	/*
-	** Get Items Function v2.0
-	** Fucntion to get Items from database
-	*/
-
-	function getItems($where, $value, $approve=NULL) {
-
-		global $db;
-        
-        $sql = ($approve == NULL) ? 'AND Approve = 1' : NULL;
-
-		$getItems = $db->prepare("SELECT * FROM items WHERE $where = ? $sql ORDER BY Item_ID DESC");
-
-	    $getItems->execute(array($value));
-
-	    return $getItems->fetchAll(PDO::FETCH_ASSOC);
-	}
-
-
 	/*
 	** Check If User Not Activated
 	** Function to check RegStaus of the user

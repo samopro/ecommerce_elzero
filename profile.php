@@ -11,7 +11,7 @@
  	 	$getUser = $db->prepare('SELECT * FROM users WHERE Username = ?');
  	 	$getUser->execute(array($sessionUser));
  	 	$info = $getUser->fetch(PDO::FETCH_ASSOC);
-
+        $userid = filter_var($info['UserID'], FILTER_SANITIZE_NUMBER_INT);
 ?>
      
 <h1 class="text-center">My Profile</h1>
@@ -51,9 +51,10 @@
 			<div class="panel-heading">My Items</div>
 			<div class="panel-body">
 				<?php
-				if (!empty(getItems('Member_ID', $info['UserID']))) {
+                $myItems = getAll("*", "items", "WHERE Member_ID={$userid}", "", "Item_ID");
+				if (!empty($myItems)) {
 					echo '<div class="row">';
-					foreach (getItems('Member_ID ', $info['UserID'], 1) as $item) {
+					foreach ($myItems as $item) {
                         echo '<div class="col-sm6 col-md-3 ">';
 						echo '<div class="thumbnail item-box">';
 						if ($item['Approve'] == 0) { 
@@ -87,9 +88,7 @@
 			<div class="panel-heading">Latest Comments</div>
 			<div class="panel-body">
 				<?php
-					$stmt = $db->prepare('SELECT comment FROM comments WHERE user_id = ?');
-					$stmt->execute(array($info['UserID']));
-					$comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+					$comments = getAll("comment", "comments", "WHERE user_id={$userid}", "","c_id");
 
 					if (!empty($comments)) {
 

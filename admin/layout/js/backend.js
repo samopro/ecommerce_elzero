@@ -61,5 +61,13 @@ $(function () {
 			$('.cat .full-view').fadeOut(200);
 		}
 	});
+    
+    // Show delete link on child categories
+    var showDel = $('.show-delete');
+    $('.child-link').hover(function () {
+       $(this).find(showDel).fadeIn(); 
+    }, function () {
+        $(this).find(showDel).fadeOut();
+    });
 
 });

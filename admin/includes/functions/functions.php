@@ -1,5 +1,21 @@
 <?php
 	
+
+    /*
+	** Get All Functions v1.0
+	** Function to get all records from any database table
+	*/
+
+    function getAll($field, $table, $where=NULL, $and=NULL, $orderField, $ordering='DESC' ) {
+        global $db;
+        
+        $stmt = $db->prepare("SELECT $field FROM $table $where $and ORDER BY $orderField $ordering");
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
 	/*
 	 ** Title Function v1.0
      ** Title Function Dat Echo The Title In Case The Page

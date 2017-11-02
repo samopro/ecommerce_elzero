@@ -367,4 +367,28 @@ table td .btn .fa {
 	margin-bottom: 30px;
 }
 
+.categories .child-head {
+    margin: 15px 0 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #327757;
+}
+
+.categories .child-cats {
+    margin: 0;
+}
+
+.categories .child-cats li:before {
+    content: "- "    
+}
+
+.categories .child-cats li {
+    margin-left: 15px;
+}
+
+.categories .show-delete {
+    color: #f00;
+    display: none;
+}
+
 /* End Category Page */

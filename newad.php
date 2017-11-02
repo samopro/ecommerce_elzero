@@ -138,7 +138,7 @@
 	            				<select name="category" class="form-control">
 	            					<option value="0">Select category</option>
 	            					<?php
-	            						foreach (getAll('categories') as $category) {
+	            						foreach (getAll('*','categories','','','ID') as $category) {
 	            							echo '<option value="' . $category['ID'] . '">' . $category['Name'] . '</option>';
 	            						}
 	            					?>

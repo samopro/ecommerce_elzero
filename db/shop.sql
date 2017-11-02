@@ -2,10 +2,10 @@
 -- version 4.7.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Oct 25, 2017 at 05:01 PM
--- Server version: 10.1.25-MariaDB
--- PHP Version: 5.6.31
+-- Host: 127.0.0.1
+-- Gegenereerd op: 02 nov 2017 om 17:46
+-- Serverversie: 10.1.25-MariaDB
+-- PHP-versie: 5.6.31
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -25,13 +25,14 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `categories`
+-- Tabelstructuur voor tabel `categories`
 --
 
 CREATE TABLE `categories` (
   `ID` int(11) NOT NULL,
   `Name` varchar(255) NOT NULL,
   `Description` text NOT NULL,
+  `parent` tinyint(11) NOT NULL,
   `Ordering` int(11) NOT NULL COMMENT 'Help make a custom order for categories',
   `Visibility` tinyint(4) NOT NULL DEFAULT '0',
   `Allow_Comment` tinyint(4) NOT NULL DEFAULT '0',
@@ -39,20 +40,22 @@ CREATE TABLE `categories` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `categories`
+-- Gegevens worden geëxporteerd voor tabel `categories`
 --
 
-INSERT INTO `categories` (`ID`, `Name`, `Description`, `Ordering`, `Visibility`, `Allow_Comment`, `Allow_Ads`) VALUES
-(11, 'Hand Made', 'Hand made items', 1, 0, 0, 0),
-(12, 'Computers', 'Computers items', 2, 0, 0, 0),
-(13, 'Cell Phones', 'Cell Phones and Accessiores', 3, 0, 0, 0),
-(14, 'Clothing', 'Clothing and fashion', 0, 0, 0, 0),
-(15, 'Tools', 'Home tools', 4, 0, 0, 0);
+INSERT INTO `categories` (`ID`, `Name`, `Description`, `parent`, `Ordering`, `Visibility`, `Allow_Comment`, `Allow_Ads`) VALUES
+(11, 'Hand Made', 'Hand made items', 0, 1, 0, 0, 0),
+(12, 'Computers', 'Computers items', 0, 2, 0, 0, 0),
+(13, 'Cell Phones', 'Cell Phones and Accessiores', 0, 3, 0, 0, 0),
+(14, 'Clothing', 'Clothing and fashion', 11, 0, 0, 0, 0),
+(15, 'Tools', 'Home tools', 0, 4, 0, 0, 0),
+(16, 'Electronics', 'Electronics hardware and components', 0, 9, 0, 0, 0),
+(19, 'Arduino', 'Arduino components and kits', 16, 10, 0, 0, 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `comments`
+-- Tabelstructuur voor tabel `comments`
 --
 
 CREATE TABLE `comments` (
@@ -65,17 +68,18 @@ CREATE TABLE `comments` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `comments`
+-- Gegevens worden geëxporteerd voor tabel `comments`
 --
 
 INSERT INTO `comments` (`c_id`, `comment`, `status`, `comment_date`, `item_id`, `user_id`) VALUES
-(1, 'Good Product. I can make awesome project with it. Fast shipping and the product arrived in good shape and well packaged.', 0, '2017-10-22', 12, 5),
-(2, 'The new model (RPi 3) is much faster than its predecessors. Indeed, it’s 10x faster than RPi 1, and double the speed of RPi 2. Now with integrated WiFi and Bluetooth 4.1 which deliver flexibility in siting the Raspberry Pi, and make it more attractive as a set-top computer, a video server, game emulator, and infinitely more. This thing screams!\r\n', 0, '2017-10-20', 13, 5);
+(2, 'The new model (RPi 3) is much faster than its predecessors. Indeed, it’s 10x faster than RPi 1, and double the speed of RPi 2. Now with integrated WiFi and Bluetooth 4.1 which deliver flexibility in siting the Raspberry Pi, and make it more attractive as a set-top computer, a video server, game emulator, and infinitely more. This thing screams!\r\n', 1, '2017-10-20', 13, 5),
+(3, 'Good laptop. I&#39;m very happy with it. It&#39;s fast and stable. \r\nThank a lot.', 0, '2017-10-31', 14, 2),
+(4, 'Good laptop. I&#39;m very happy with it. It&#39;s fast and stable. \r\nThank a lot.', 0, '2017-10-31', 14, 2);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `items`
+-- Tabelstructuur voor tabel `items`
 --
 
 CREATE TABLE `items` (
@@ -94,21 +98,23 @@ CREATE TABLE `items` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `items`
+-- Gegevens worden geëxporteerd voor tabel `items`
 --
 
 INSERT INTO `items` (`Item_ID`, `Name`, `Description`, `Price`, `Add_Date`, `Country_Made`, `Image`, `Status`, `Rating`, `Approve`, `Cat_ID`, `Member_ID`) VALUES
-(8, 'Samsung S7', 'Mobile phone in good shape. It\'s good for taken pictures and voor games.', '$400', '2017-10-23', 'Netherlands', '', '2', 0, 0, 13, 12),
+(8, 'Samsung S7', 'Mobile phone in good shape. It\'s good for taken pictures and voor games.', '$400', '2017-10-23', 'Netherlands', '', '2', 0, 1, 13, 12),
 (9, 'iPhone 6s', 'Good iPhone. With many apps and games.', '$430', '2017-10-23', 'USA', '', '2', 0, 0, 13, 15),
 (10, 'One 1+', 'High perforamnce smart phone with fast processor and large memory.', '$350', '2017-10-23', 'China', '', '1', 0, 0, 13, 20),
 (11, 'Nokia', 'smart phone with windows operating system. You can used for al days needs.', '$200', '2017-10-23', 'Europe', '', '2', 0, 0, 13, 3),
-(12, 'Arduino uno', 'Computer for making things.', '$5', '2017-10-24', 'Italy', '', '1', 0, 0, 15, 5),
-(13, 'Raspberry PI', 'Computer for hobby\'s and awesome DIY projects ', '$40', '2017-10-24', 'UK', '', '1', 0, 0, 12, 5);
+(13, 'Raspberry PI', 'Computer for hobby\'s and awesome DIY projects ', '$40', '2017-10-24', 'UK', '', '1', 0, 1, 12, 5),
+(14, 'Mac Book Pro', 'Apple Laptop', '$1100', '2017-10-30', 'USA', '', '1', 0, 1, 12, 2),
+(16, 'Mobile Robot', 'Smart robot with wifi and bluethoot', '$75', '2017-11-01', 'Netherlands', '', '1', 0, 0, 11, 2),
+(17, 'Multimeter', 'Precise multimeter. You can mesure voltage and current and detetct shortcut circuit.', '$30', '2017-11-01', 'China', '', '1', 0, 1, 15, 20);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Tabelstructuur voor tabel `users`
 --
 
 CREATE TABLE `users` (
@@ -124,7 +130,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `users`
+-- Gegevens worden geëxporteerd voor tabel `users`
 --
 
 INSERT INTO `users` (`UserID`, `Username`, `Password`, `Email`, `FullName`, `GroupID`, `TrustStatus`, `RegStatus`, `Date`) VALUES
@@ -134,23 +140,23 @@ INSERT INTO `users` (`UserID`, `Username`, `Password`, `Email`, `FullName`, `Gro
 (5, 'Sherif', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'sherif@mail.com', 'Sherif Ahmed', 0, 0, 0, '2017-10-02'),
 (12, 'Rashid', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'rash@mail.com', 'Rashid Latif', 0, 0, 1, '2017-06-14'),
 (15, 'Said', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'said_morad@gmail.com', 'Said Morad', 0, 0, 0, '2017-10-02'),
-(20, 'Karim', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'karim_@mail.com', 'Karim Naim', 0, 0, 0, '2017-10-02'),
+(20, 'Karim', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'karim_@mail.com', 'Karim Naim', 0, 0, 1, '2017-10-02'),
 (21, 'Hassan', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'hassan@mail.com', '', 0, 0, 0, '2017-10-24'),
 (22, 'Nassim', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'nass@mail.com', '', 0, 0, 0, '2017-10-24');
 
 --
--- Indexes for dumped tables
+-- Indexen voor geëxporteerde tabellen
 --
 
 --
--- Indexes for table `categories`
+-- Indexen voor tabel `categories`
 --
 ALTER TABLE `categories`
   ADD PRIMARY KEY (`ID`),
   ADD UNIQUE KEY `Name` (`Name`);
 
 --
--- Indexes for table `comments`
+-- Indexen voor tabel `comments`
 --
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`c_id`),
@@ -158,7 +164,7 @@ ALTER TABLE `comments`
   ADD KEY `comment_user` (`user_id`);
 
 --
--- Indexes for table `items`
+-- Indexen voor tabel `items`
 --
 ALTER TABLE `items`
   ADD PRIMARY KEY (`Item_ID`),
@@ -166,49 +172,49 @@ ALTER TABLE `items`
   ADD KEY `cat_1` (`Cat_ID`);
 
 --
--- Indexes for table `users`
+-- Indexen voor tabel `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`UserID`),
   ADD UNIQUE KEY `username` (`Username`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT voor geëxporteerde tabellen
 --
 
 --
--- AUTO_INCREMENT for table `categories`
+-- AUTO_INCREMENT voor een tabel `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 --
--- AUTO_INCREMENT for table `comments`
+-- AUTO_INCREMENT voor een tabel `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `c_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `c_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
--- AUTO_INCREMENT for table `items`
+-- AUTO_INCREMENT voor een tabel `items`
 --
 ALTER TABLE `items`
-  MODIFY `Item_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `Item_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT voor een tabel `users`
 --
 ALTER TABLE `users`
   MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
--- Constraints for dumped tables
+-- Beperkingen voor geëxporteerde tabellen
 --
 
 --
--- Constraints for table `comments`
+-- Beperkingen voor tabel `comments`
 --
 ALTER TABLE `comments`
   ADD CONSTRAINT `comment_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `items_comment` FOREIGN KEY (`item_id`) REFERENCES `items` (`Item_ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `items`
+-- Beperkingen voor tabel `items`
 --
 ALTER TABLE `items`
   ADD CONSTRAINT `cat_1` FOREIGN KEY (`Cat_ID`) REFERENCES `categories` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,

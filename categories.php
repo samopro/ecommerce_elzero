@@ -7,7 +7,7 @@
 	<h1 class="text-center">Show Catgory</h1>
 	<div class="row">
 		<?php
-			foreach (getItems('Cat_ID ', $_GET['catid']) as $item) {
+			foreach (getAll("*", "items", "WHERE Cat_ID={$_GET['catid']}", "AND Approve = 1", "Item_ID") as $item) {
 				echo '<div class="col-sm6 col-md-3 ">';
 					echo '<div class="thumbnail item-box">';
 						echo '<span class="price-tag">' . $item['Price'] . '</span>'; 

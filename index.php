@@ -11,7 +11,7 @@
 <div class="container">
 	<div class="row">
 		<?php
-			foreach (getAll('items', 'ORDER BY Item_ID DESC', 'WHERE Approve=1') as $item) {
+			foreach (getAll('*', 'items', 'WHERE Approve=1', '', 'Item_ID') as $item) {
 				echo '<div class="col-sm6 col-md-3 ">';
 					echo '<div class="thumbnail item-box">';
 						echo '<span class="price-tag">' . $item['Price'] . '</span>'; 
@@ -33,6 +33,6 @@
  	
 	include $tpl . 'footer.php';
 
-	// Les 111 
+	// Les 121
 
 ?>
