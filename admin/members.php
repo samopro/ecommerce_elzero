@@ -33,10 +33,11 @@
  			<h1 class="text-center">Manage Members</h1>
  			<div class="container">
  				<div class="table-responsive">
- 					<table class="table text-center table-bordered table-striped">
+ 					<table class="table manage-members text-center table-bordered table-striped">
  						<thead>
 	 						<tr>
 	 							<th>#ID</th>
+								<th>Avatar</th>
 	 							<th>Username</th>
 	 							<th>Email</th>
 	 							<th>Full Name</th>
@@ -46,7 +47,15 @@
  						</thead>
  				   <?php foreach ($rows as $row) {
  				 	 		echo '<tr>';
- 				 				echo '<td>' . $row['UserID'] . '</td>';
+								echo '<td>' . $row['UserID'] . '</td>';
+								echo '<td>';
+								if (empty($row['profile_img'])) {
+									echo '<img src="uploads/profile_img/placeholder_profile.png" alt="avatar">';
+								} else {
+									echo '<img src="uploads/profile_img/' . $row['profile_img'] . '" alt="avatar">';
+								}
+								
+								echo '</td>';
  				 	 			echo '<td>' . $row['Username'] . '</td>';
  				 	 			echo '<td>' . $row['Email'] . '</td>';
  				 	 			echo '<td>' . $row['FullName'] . '</td>';
@@ -70,7 +79,7 @@
  		?>
  			<h1 class="text-center">Add Member</h1> 
 	            <div class="container">
-	            	<form class="form-horizontal" action="?do=Insert" method="POST">
+	            	<form class="form-horizontal" action="?do=Insert" method="POST" enctype="multipart/form-data">
 	            		<!-- Start Username Field -->
 	            		<div class="form-group form-group-lg">
 	            			<label class="col-sm-2 control-label">Username</label>
@@ -105,6 +114,14 @@
 	            			</div>
 	            		</div>
 	            		<!-- End Full Name Field -->
+						<!-- Start Profile Image Field -->
+	            		<div class="form-group form-group-lg">
+	            			<label class="col-sm-2 control-label">Profile Image</label>
+	            			<div class="col-sm-10 col-md-6">
+	            				<input type="file" name="profile_img" class="form-control" required="required">
+	            			</div>
+	            		</div>
+	            		<!-- End Profile Image Field -->
 	            		<!-- Start Save Button -->
 	            		<div class="form-group">
 	            			<div class="col-sm-offset-2 col-sm-10 col-md-6">
@@ -121,6 +138,18 @@
 
 					echo '<h1 class="text-center">Insert Member</h1>'; 
 					echo '<div class="container">';
+
+					// Upload Variables
+					$profileImgName = $_FILES['profile_img']['name'];
+					$profileImgSize = $_FILES['profile_img']['size'];
+					$profileImgTmp	= $_FILES['profile_img']['tmp_name'];
+					$profileImgType = $_FILES['profile_img']['type'];
+
+					//List of allowed file extentions to upload
+					$profileImgAllowedExtention = array('jpeg', 'jpg', 'png', 'gif');
+
+					// Get profile image extention
+					$profileImgExtention = strtolower(end(explode('.', $profileImgName)));
 
 					// Get Variables From The Form
 					$username 	= $_POST['username'];
@@ -160,6 +189,18 @@
 					if (empty($email)) {
 						$formErrors[] = 'Email cant be <strong>empty</strong>';
 					}
+
+					if (!empty($profileImgName) && !in_array($profileImgExtention, $profileImgAllowedExtention)) {
+						$formErrors[] = 'This extension not <strong>Allowed</strong>';
+					}
+
+					if (empty($profileImgName)) {
+						$formErrors[] = 'Profile image is <strong>required</strong>';
+					}
+
+					if ($profileImgSize > 4194304) {
+						$formErrors[] = 'Profile image can\'t be larger than <strong>4MB</strong>';
+					}
                     
                     if (!empty($formErrors)) {
                     	 echo '<div class="alert alert-danger">';
@@ -172,6 +213,10 @@
 					// Check if there's no error, proceed the update operation
 					if (empty($formErrors)) { 
 
+						// File Upload
+						$profileImg = rand(0, 100000) . '_' . $profileImgName;
+						move_uploaded_file($profileImgTmp, "uploads\profile_img\\" . $profileImg);
+
 						// Check If User Exist in Database
 						if (checkItem('Username', 'users', $username))  {
 							$errorMsg = '<div class="alert alert-danger">Sorry this user is exist</div>';
@@ -179,12 +224,14 @@
 						} else {
 
 							// Insert userinfo in database
-                        	$stmt = $db->prepare('INSERT INTO users (Username, Password, Email, FullName, RegStatus,Date) VALUES (:username, :pass, :email, :fullname, 1, CURDATE())');
+                        	$stmt = $db->prepare("INSERT INTO users (Username, Password, Email, FullName, RegStatus, Date, profile_img) 
+												  VALUES (:username, :pass, :email, :fullname, 1, CURDATE(), :profile_img) ");
                         	$stmt->execute(array(
-                                'username' => $username, 
-                            	'pass'     => $hashedPass,
-                            	'email'    => $email, 
-                            	'fullname' => $name
+                                'username' 		=> $username, 
+                            	'pass'     		=> $hashedPass,
+                            	'email'    		=> $email, 
+								'fullname' 		=> $name,
+								'profile_img'	=> $profileImg
                             ));
 
 					    	// Echo Success Message
