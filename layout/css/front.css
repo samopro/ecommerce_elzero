@@ -192,9 +192,9 @@ table > caption + thead > tr:first-child > td,
 
 /* Start Profile Page */
 
-.information {
-	/*margin-top: 20px;*/
-}
+/* .information {
+	/*margin-top: 20px;
+} */
 
 .inforamtion ul {
 	padding: 0;
@@ -244,6 +244,15 @@ table > caption + thead > tr:first-child > td,
 .item-info ul li span {
 	display: inline-block;
 	width: 120px;
+}
+
+.tags-items a {
+	display: inline-block;
+	background-color: #e2e2e2;
+	padding: 4px 10px;
+	border-radius: 3px;
+	color: #666;
+	margin-right: 5px;
 }
 
 .add-comment h3 {

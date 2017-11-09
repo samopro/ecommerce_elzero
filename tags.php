@@ -4,11 +4,12 @@
 ?>
 
 <div class="container">
-	<h1 class="text-center">Show Catgory Items</h1>
 	<div class="row">
 		<?php
-		    if (isset($_GET['catid']) && is_numeric($_GET['catid'])) {
-				foreach (getAll("*", "items", "WHERE Cat_ID={$_GET['catid']}", "AND Approve = 1", "Item_ID") as $item) {
+		    if (isset($_GET['name'])) {
+				$tag = $_GET['name'];
+                echo '<h1 class="text-center">' . $tag . "</h1>";
+				foreach (getAll("*", "items", "WHERE Tags LIKE '%$tag%'", " AND Approve=1", "Item_ID") as $item) {
 					echo '<div class="col-sm6 col-md-3 ">';
 						echo '<div class="thumbnail item-box">';
 							echo '<span class="price-tag">' . $item['Price'] . '</span>'; 
@@ -28,3 +29,4 @@
 
 <?php include $tpl . 'footer.php'; ?>
 
+<!-- Les 124 -->

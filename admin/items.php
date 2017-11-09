@@ -133,10 +133,10 @@
 	            				<select name="user" class="form-control">
 	            					<option value="0">Select member</option>
 	            					<?php
-	            						$stmt = $db->prepare('SELECT * FROM users');
-	            						$stmt->execute();
-	            						$users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	            						foreach ($users as $user) {
+	            						// $stmt = $db->prepare('SELECT * FROM users');
+	            						// $stmt->execute();
+	            						// $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	            						foreach (getAll("*", "users", "", "", "UserID", "ASC") as $user) {
 	            							echo '<option value="' . $user['UserID'] . '">' . $user['Username'] . '</option>';
 	            						}
 	            					?>
@@ -149,19 +149,27 @@
 	            			<label class="col-sm-2 control-label">Category</label>
 	            			<div class="col-sm-10 col-md-6">
 	            				<select name="category" class="form-control">
-	            					<option value="0">Select category</option>
+	            					<option value="0">...</option>
 	            					<?php
-	            						$stmt2 = $db->prepare('SELECT * FROM categories');
-	            						$stmt2->execute();
-	            						$categories = $stmt2->fetchAll(PDO::FETCH_ASSOC);
-	            						foreach ($categories as $category) {
-	            							echo '<option value="' . $category['ID'] . '">' . $category['Name'] . '</option>';
+	            						foreach (getAll("*", "categories", "WHERE parent=0", "", "ID", "ASC") as $category) {
+											echo '<option value="' . $category['ID'] . '">' . $category['Name'] . '</option>';
+											foreach (getAll("*", "categories", " WHERE parent={$category['ID']}", "", "ID", "ASC") as $childs_cat) {
+												echo '<option value="' . $childs_cat['ID'] . '">--- ' . $childs_cat['Name'] . '</option>';
+											} 
 	            						}
 	            					?>
 	            				</select>
 	            			</div>
 	            		</div>
 	            		<!-- End Category Field -->
+						<!-- Start Tags Field -->
+						<div class="form-group form-group-lg">
+							<label class="col-sm-2 control-label">Tags</label>
+							<div class="col-sm-10 col-md-6">
+								<input type="text" name="tags" class="form-control" placeholder="Separate Tags with comma">
+							</div>
+						</div>					
+						<!-- End Tags Field -->
 	            		<!-- Start Save Button -->
 	            		<div class="form-group">
 	            			<div class="col-sm-offset-2 col-sm-10 col-md-6">
@@ -187,7 +195,8 @@
 					$country = $_POST['country'];
 		            $status  = $_POST['status'];
 		            $user_id = $_POST['user']; 
-		            $cat_id  = $_POST['category'];           
+					$cat_id  = $_POST['category']; 
+					$tags	 = $_POST['tags'];        
 
 					// Validate The Form
 					$formErrors = array();
@@ -234,7 +243,8 @@
 					if (empty($formErrors)) { 
 
 						// Insert userinfo in database
-                    	$stmt = $db->prepare('INSERT INTO items (Name, Description, Price, Add_Date, Country_Made, Status, Cat_ID, Member_ID) VALUES (:name, :description, :price, CURDATE(), :country, :status, :cat_id, :user_id)');
+                    	$stmt = $db->prepare('INSERT INTO items (Name, Description, Price, Add_Date, Country_Made, Status, Cat_ID, Member_ID, Tags) 
+											  VALUES (:name, :description, :price, CURDATE(), :country, :status, :cat_id, :user_id, :tags)');
                     	$stmt->execute(array(
                             'name' 			=> $name, 
                         	'description'   => $desc,
@@ -242,7 +252,8 @@
                         	'country' 		=> $country,
                         	'status' 		=> $status,
                         	'cat_id'		=> $cat_id,
-                        	'user_id'       => $user_id
+							'user_id'       => $user_id,
+							'tags'			=> $tags
                         ));
 
 				    	// Echo Success Message
@@ -266,7 +277,8 @@
      			// Check of item_id is numeric 
 	           $item_id = isset($_GET['itemid']) && is_numeric($_GET['itemid']) ? intval($_GET['itemid']) : 0; 
 	            
-	            // Select item record with the given item_id
+				// Select item record with the given item_id
+#TODO: 				getAll("*", "items", "WHERE Item_ID", $and=NULL, $orderField, $ordering='DESC' )
 	           $stmt = $db->prepare('SELECT * FROM items WHERE Item_ID = ?');
 	           $stmt->execute(array($item_id));
 	           $item = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -369,6 +381,14 @@
 	            			</div>
 	            		</div>
 	            		<!-- End Category Field -->
+						<!-- Start Tags Field -->
+						<div class="form-group form-group-lg">
+							<label class="col-sm-2 control-label">Tags</label>
+							<div class="col-sm-10 col-md-6">
+								<input type="text" name="tags" class="form-control" value="<?php echo $item['Tags'] ?>" placeholder="Separate Tags with comma">
+							</div>
+						</div>					
+						<!-- End Tags Field -->
 	            		<!-- Start Save Button -->
 	            		<div class="form-group">
 	            			<div class="col-sm-offset-2 col-sm-10 col-md-6">
@@ -444,7 +464,8 @@
 					$country = $_POST['country'];
 		            $status  = $_POST['status'];
 		            $user_id = $_POST['user']; 
-		            $cat_id  = $_POST['category'];           
+					$cat_id  = $_POST['category'];
+					$tags	 = $_POST['tags'];            
 
 					// Validate The Form
 					$formErrors = array();
@@ -491,8 +512,8 @@
 					if (empty($formErrors)) { 
 
 						// Insert userinfo in database
-                    	$stmt = $db->prepare('UPDATE items SET Name = ?, Description = ?, Price = ?, Country_Made = ?, Status = ?, Cat_ID = ?, Member_ID = ? WHERE Item_ID = ?') ;
-                    	$stmt->execute(array($name, $desc, $price, $country, $status, $cat_id, $user_id, $itemid));
+                    	$stmt = $db->prepare('UPDATE items SET Name = ?, Description = ?, Price = ?, Country_Made = ?, Status = ?, Cat_ID = ?, Member_ID = ?, Tags = ? WHERE Item_ID = ?') ;
+                    	$stmt->execute(array($name, $desc, $price, $country, $status, $cat_id, $user_id,  $tags, $itemid));
 
 				    	// Echo Success Message
 						$theMsg = '<div class="alert alert-success">' . $stmt->rowCount() . ' Record Added</div>';

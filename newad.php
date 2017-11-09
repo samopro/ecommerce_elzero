@@ -19,6 +19,7 @@
 			$country 	= ltrim(rtrim(filter_var($_POST['country'], FILTER_SANITIZE_STRING)));
 			$status 	= filter_var($_POST['status'], FILTER_SANITIZE_NUMBER_INT);
 			$category 	= filter_var($_POST['category'], FILTER_SANITIZE_NUMBER_INT);
+			$tags		= ltrim(rtrim(filter_var($_POST['tags'], FILTER_SANITIZE_STRING)));
 
 			if (strlen($title) < 3) {
 				$formErrors[] = 'Item Title must be at least 3 characters';
@@ -48,8 +49,8 @@
 			if (empty($formErrors)) { 
 				
 				// Insert userinfo in database
-				$stmt = $db->prepare('INSERT INTO items (Name, Description, Price, Add_Date, Country_Made, Status, Cat_ID, Member_ID) 
-									  VALUES (:title, :description, :price, CURDATE(), :country, :status, :cat_id, :user_id)');
+				$stmt = $db->prepare('INSERT INTO items (Name, Description, Price, Add_Date, Country_Made, Status, Cat_ID, Member_ID, Tags) 
+									  VALUES (:title, :description, :price, CURDATE(), :country, :status, :cat_id, :user_id, :tags)');
 				$stmt->execute(array(
 					'title' 		=> $title, 
 					'description'   => $desc,
@@ -57,7 +58,8 @@
 					'country' 		=> $country,
 					'status' 		=> $status,
 					'cat_id'		=> $category,
-					'user_id'       => $_SESSION['uid']
+					'user_id'       => $_SESSION['uid'],
+					'tags'			=> $_POST['tags']
 				));
 
 				// Echo Success Message
@@ -146,6 +148,14 @@
 	            			</div>
 	            		</div>
 	            		<!-- End Category Field -->
+						<!-- Start Tags Field -->
+						<div class="form-group form-group-lg">
+							<label class="col-sm-2 control-label">Tags</label>
+							<div class="col-sm-10 col-md-6">
+								<input type="text" name="tags" class="form-control" placeholder="Separate Tags with comma">
+							</div>
+						</div>					
+						<!-- End Tags Field -->
 	            		<!-- Start Save Button -->
 	            		<div class="form-group">
 	            			<div class="col-sm-offset-2 col-sm-10 col-md-6">
